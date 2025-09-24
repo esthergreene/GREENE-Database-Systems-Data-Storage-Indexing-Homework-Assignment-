@@ -38,6 +38,12 @@ https://www.geeksforgeeks.org/python/classmethod-in-python/
 https://docs.python.org/3/library/struct.html
 https://www.tutorialspoint.com/python/string_decode.htm
 """
+
+"""
+VariableLengthRecord
+Turns a record (id, name, dept, salary) into raw bytes for storage (serialize) and rebuilds it back 
+into a Python object from those bytes (deserialize). Translator between Python objects to disk bytes.
+"""
 class VariableLengthRecord:
     def __init__(self, id, name, dept, salary): self.id, self.name, self.dept, self.salary = id, name, dept, salary
     def serialize(self):
