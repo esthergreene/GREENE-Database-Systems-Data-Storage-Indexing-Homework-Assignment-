@@ -81,7 +81,7 @@ https://www.w3schools.com/python/ref_func_range.asp
 
 """
 SlottedPage
-
+Holds a bunch of records in one page and keeps track of where each record starts and how long it is.
 """
 class SlottedPage:
     def __init__(s): s.data, s.slots=[],[]
@@ -129,7 +129,7 @@ https://dev.to/smac89/better-way-to-tryexceptpass-in-python-2460
 
 """
 RecordFile
-
+Looks after the whole file of pages and lets me put records in, pull them out, or delete them.
 """
 class RecordFile:
     def __init__(s,f): s.f = f; open(f,"ab").close()
