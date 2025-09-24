@@ -41,8 +41,8 @@ https://www.tutorialspoint.com/python/string_decode.htm
 
 """
 VariableLengthRecord
-Turns a record (id, name, dept, salary) into raw bytes for storage (serialize) and rebuilds it back 
-into a Python object from those bytes (deserialize). Translator between Python objects to disk bytes.
+Takes a record (id, name, dept, salary) and (serialize) turns it into bytes so it can be stored, 
+then (deserialize) turns those bytes back into a normal record when you need it.
 """
 class VariableLengthRecord:
     def __init__(self, id, name, dept, salary): self.id, self.name, self.dept, self.salary = id, name, dept, salary
