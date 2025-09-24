@@ -105,4 +105,10 @@ class SlottedPage:
         pg.slots = [struct.unpack_from("<II", d, pos+i*SLOT_SIZE) for i in range(n)]
         return pg
 
-    
+"""
+References: 
+https://www.geeksforgeeks.org/python/python-open-function/
+https://www.w3schools.com/python/ref_file_close.asp
+"""   
+class RecordFile:
+    def __init__(s,f): s.f = f; open(f,"ab").close()
