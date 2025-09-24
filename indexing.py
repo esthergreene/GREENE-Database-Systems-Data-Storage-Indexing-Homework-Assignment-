@@ -8,3 +8,15 @@
  *    that can store, retrieve, and manage records with variable-length fields within fixed-size pages.
  * Note: Sources have been cited and appear above respective code (e.g., "References:")
 """
+
+"""
+References: 
+https://www.w3schools.com/python/
+https://www.python.org/about/gettingstarted/
+https://www.geeksforgeeks.org/python/os-module-python-examples/
+https://www.geeksforgeeks.org/python/struct-module-python/
+"""
+
+import struct, os
+
+PAGE_SIZE, HEADER_SIZE, SLOT_SIZE = 4096, 4, 8
