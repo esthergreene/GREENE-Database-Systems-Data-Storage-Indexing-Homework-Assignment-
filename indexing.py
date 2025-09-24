@@ -37,6 +37,7 @@ https://www.geeksforgeeks.org/python/python-pack-method-in-tkinter/
 https://www.geeksforgeeks.org/python/classmethod-in-python/
 https://docs.python.org/3/library/struct.html
 https://www.tutorialspoint.com/python/string_decode.htm
+https://www.geeksforgeeks.org/python/python-repr-function/
 """
 
 """
@@ -66,3 +67,13 @@ class VariableLengthRecord:
         get=lambda i: None if nullBitmap>>i&1 else vd[offsets[i]:offsets[i]+lengths[i]].decode()
         return classMethod(get(0),get(1),get(2),None if nullBitmap>>3&1 else sal)
     def __repr__(self): return f"({self.id},{self.name},{self.dept},{self.salary})"
+
+"""
+References: 
+https://docs.python.org/3/c-api/memory.html
+https://www.w3schools.com/python/ref_list_insert.asp
+"""
+class SlottedPage:
+    def __init__(s): s.data, s.slots=[],[]
+    def free(s): return PAGE_SIZE-HEADER_SIZE-len(s.data)-len(s.slots)*SLOT_SIZE
+    def insert(s,rec):
