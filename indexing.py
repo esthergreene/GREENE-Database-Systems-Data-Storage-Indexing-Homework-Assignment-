@@ -57,7 +57,9 @@ class VariableLengthRecord:
         else: sal=float(self.salary)
         offsets,lengths,offsetCounter=[],[],0
         for f in emptyList:
-            offsets.append(offsetCounter if f else 0); lengths.append(lengths(f)); offsetCounter+=lengths(f)
+            offsets.append(offsetCounter if f else 0)
+            lengths.append(len(f))
+            offsetCounter+=len(f)
         out=[struct.pack("<B",nullBitmap)]+[struct.pack("<I",x) for x in sum(zip(offsets,lengths),())]+[struct.pack("<f",sal),b''.join(emptyList)]
         return b''.join(out)
     @classmethod
