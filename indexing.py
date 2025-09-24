@@ -72,8 +72,37 @@ class VariableLengthRecord:
 References: 
 https://docs.python.org/3/c-api/memory.html
 https://www.w3schools.com/python/ref_list_insert.asp
+https://www.w3schools.com/python/ref_func_len.asp
+https://www.geeksforgeeks.org/python/python-pack-method-in-tkinter/
+https://docs.python.org/3/library/struct.html
 """
 class SlottedPage:
     def __init__(s): s.data, s.slots=[],[]
     def free(s): return PAGE_SIZE-HEADER_SIZE-len(s.data)-len(s.slots)*SLOT_SIZE
     def insert(s,rec):
+        b = rec.serialize()
+        if s.free() < len(b) + SLOT_SIZE: return -1
+        off = HEADER_SIZE + len(s.data)
+        s.data += b; s.slots.append((off, len(b)))
+        return len(s.slots) - 1
+    def get(s, i):
+        if i >= len(s.slots) or not s.slots[i][1]: return None
+        off, ln = s.slots[i]
+        return VariableLengthRecord.deserialize(bytes(s.data[off-HEADER_SIZE:off-HEADER_SIZE+ln]))
+    def delete(s, i): s.slots[i] = (0, 0)
+    def pack(s):
+        p = bytearray(PAGE_SIZE)
+        struct.pack_into("<HH", p, 0, len(s.slots), HEADER_SIZE+len(s.data))
+        p[HEADER_SIZE:HEADER_SIZE+len(s.data)] = bytes(s.data)
+        pos = PAGE_SIZE - len(s.slots) * SLOT_SIZE
+        for o, l in s.slots: struct.pack_into("<II", p, pos, o, l); pos += SLOT_SIZE
+        return bytes(p)
+    @classmethod
+    def unpack(c, d):
+        n, f = struct.unpack_from("<HH", d, 0)
+        pg = c(); pg.data = list(d[HEADER_SIZE:f])
+        pos = PAGE_SIZE - n * SLOT_SIZE
+        pg.slots = [struct.unpack_from("<II", d, pos+i*SLOT_SIZE) for i in range(n)]
+        return pg
+
+    
