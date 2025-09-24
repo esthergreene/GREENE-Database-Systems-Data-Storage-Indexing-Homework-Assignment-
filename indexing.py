@@ -38,6 +38,7 @@ https://www.geeksforgeeks.org/python/classmethod-in-python/
 https://docs.python.org/3/library/struct.html
 https://www.tutorialspoint.com/python/string_decode.htm
 https://www.geeksforgeeks.org/python/python-repr-function/
+https://www.w3schools.com/python/ref_func_range.asp
 """
 
 """
@@ -75,6 +76,12 @@ https://www.w3schools.com/python/ref_list_insert.asp
 https://www.w3schools.com/python/ref_func_len.asp
 https://www.geeksforgeeks.org/python/python-pack-method-in-tkinter/
 https://docs.python.org/3/library/struct.html
+https://www.w3schools.com/python/ref_func_range.asp
+"""
+
+"""
+SlottedPage
+
 """
 class SlottedPage:
     def __init__(s): s.data, s.slots=[],[]
@@ -109,6 +116,44 @@ class SlottedPage:
 References: 
 https://www.geeksforgeeks.org/python/python-open-function/
 https://www.w3schools.com/python/ref_file_close.asp
+https://www.geeksforgeeks.org/python/python-os-path-size-method/
+https://www.tutorialspoint.com/python/file_seek.htm
+https://www.w3schools.com/python/ref_file_write.asp
+https://www.w3schools.com/python/ref_func_range.asp
+https://www.w3schools.com/python/ref_list_insert.asp
+https://www.geeksforgeeks.org/python/python-dictionary-get-method/
+https://www.geeksforgeeks.org/python/__name__-a-special-variable-in-python/
+https://www.geeksforgeeks.org/python/python-list-remove/
+https://dev.to/smac89/better-way-to-tryexceptpass-in-python-2460
 """   
+
+"""
+RecordFile
+
+"""
 class RecordFile:
     def __init__(s,f): s.f = f; open(f,"ab").close()
+    def __init__(s, f): s.f = f; open(f, "ab").close()
+    def np(s): return os.path.getsize(s.f)//PAGE_SIZE
+    def rp(s, i): return SlottedPage.unpack(open(s.f, "rb").read()[i*PAGE_SIZE:(i+1)*PAGE_SIZE])
+    def wp(s, p, i):
+        with open(s.f, "r+b") as f: f.seek(i*PAGE_SIZE); f.write(p.pack())
+    def ins(s, r):
+        for i in range(s.np()):
+            p = s.rp(i); sl = p.insert(r)
+            if sl != -1: s.wp(p, i); return i, sl
+        p = SlottedPage(); sl = p.insert(r); open(s.f, "ab").write(p.pack()); return s.np()-1, sl
+    def get(s, pn, sn): return s.rp(pn).get(sn)
+    def delete(s, pn, sn): p = s.rp(pn); p.delete(sn); s.wp(p, pn)
+
+if __name__ == "__main__":
+    fn = "instructors.dat"; 
+    try: os.remove(fn)
+    except: pass
+    rf = RecordFile(fn)
+    recs = [("EMP001","Alice Johnson","CS",75000),("EMP002","Bob Smith","Math",68000),
+            ("EMP003","Carol Williams","Physics",None),("EMP004","David Brown","CS",82000)]
+    locs = [rf.ins(VariableLengthRecord(*r)) for r in recs]
+    for (pn,sn),r in zip(locs,recs): print("Inserted",r,"at",pn,sn)
+    print("Retrieve:",[rf.get(p,s) for p,s in locs])
+    rf.delete(*locs[1]); print("After delete:",[rf.get(p,s) for p,s in locs])
