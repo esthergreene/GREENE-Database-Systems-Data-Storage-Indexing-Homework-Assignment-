@@ -7,6 +7,7 @@
  *    slotted-page structure as described in database systems theory. You will create a system
  *    that can store, retrieve, and manage records with variable-length fields within fixed-size pages.
  * Note: Sources have been cited and appear above respective code (e.g., "References:")
+ * ChaGPT was used in the making of this code. 
 """
 
 """
