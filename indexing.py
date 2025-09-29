@@ -40,13 +40,19 @@ https://docs.python.org/3/library/struct.html
 https://www.tutorialspoint.com/python/string_decode.htm
 https://www.geeksforgeeks.org/python/python-repr-function/
 https://www.w3schools.com/python/ref_func_range.asp
-ChatGPT was used as an outline for this code (lines 51-74).
+ChatGPT was used as an outline for this code (lines 47-80).
 """
 
 """
 VariableLengthRecord
+Represents a single record (like one row in a database table) with fields: id, name, dept, and salary.
+Serialize: Converts the record into a sequence of bytes so it can be stored inside a page. Handles None 
+values by marking them in a “null bitmap” and putting placeholders in the byte layout.
+Deserialize: Does the reverse—takes the raw bytes from storage and reconstructs the original record as Python objects (id, name, etc.).
+__repr__: Makes it easy to print a record in readable form like (EMP001, Alice Johnson, CS, 75000).
 Takes a record (id, name, dept, salary) and (serialize) turns it into bytes so it can be stored, 
 then (deserialize) turns those bytes back into a normal record when you need it.
+Big idea: This class is the translator between human-readable records and machine-readable bytes.
 """
 class VariableLengthRecord:
     def __init__(self, id, name, dept, salary): self.id, self.name, self.dept, self.salary = id, name, dept, salary
@@ -81,12 +87,21 @@ https://www.w3schools.com/python/ref_func_len.asp
 https://www.geeksforgeeks.org/python/python-pack-method-in-tkinter/
 https://docs.python.org/3/library/struct.html
 https://www.w3schools.com/python/ref_func_range.asp
-ChatGPT was used as an outline for this code (lines 91-118).
+ChatGPT was used as an outline for this code (lines 93-133).
 """
 
 """
 SlottedPage
+A container for multiple VariableLengthRecords inside one page of fixed size (4096 bytes here). 
+This follows the slotted-page structure from database systems. 
+insert: Adds a new record’s bytes into the page if there’s space. Keeps track of where each record starts and its length using “slots.”
+get: Fetches a record from the page by using its slot (index).
+delete: Marks a slot as empty (doesn’t immediately remove the bytes).
+pack: Converts the page into raw bytes so it can be written to a file.
+unpack: Reads bytes from a file and rebuilds the page with its records and slots.
+free: Reports how many bytes are still available in the page.
 Holds a bunch of records in one page and keeps track of where each record starts and how long it is.
+Big idea: This class is the page manager, organizing records within one block of storage.
 """
 class SlottedPage:
     def __init__(s): s.data, s.slots=[],[]
@@ -130,12 +145,19 @@ https://www.geeksforgeeks.org/python/python-dictionary-get-method/
 https://www.geeksforgeeks.org/python/__name__-a-special-variable-in-python/
 https://www.geeksforgeeks.org/python/python-list-remove/
 https://dev.to/smac89/better-way-to-tryexceptpass-in-python-2460
-ChatGPT was used as an outline for this code (lines 140-165).
+ChatGPT was used as an outline for this code (lines 152-187).
 """   
 
 """
 RecordFile
+Manages the entire file made up of multiple pages (SlottedPages). Think of it like the database file on disk.
 Looks after the whole file of pages and lets me put records in, pull them out, or delete them.
+ins: Finds a page with enough free space and inserts the record there. If none exist, it creates a new page.
+get: Retrieves a record by giving page number (pn) and slot number (sn).
+delete: Removes a record from the file by deleting it from the right page.
+rp / wp: Reads or writes a page from/to the file.
+np: Counts how many pages are currently stored in the file.
+Big idea: This class is the file-level manager, coordinating multiple pages and ensuring records get stored and retrieved properly across the whole file.
 """
 class RecordFile:
     def __init__(s,f): s.f = f; open(f,"ab").close()
