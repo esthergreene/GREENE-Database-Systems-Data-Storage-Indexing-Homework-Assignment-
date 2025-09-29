@@ -7,7 +7,7 @@
  *    slotted-page structure as described in database systems theory. You will create a system
  *    that can store, retrieve, and manage records with variable-length fields within fixed-size pages.
  * Note: Sources have been cited and appear above respective code (e.g., "References:")
- * ChaGPT was used in the making of this code. 
+ * ChatGPT was used in the making of this code. 
 """
 
 """
@@ -40,6 +40,7 @@ https://docs.python.org/3/library/struct.html
 https://www.tutorialspoint.com/python/string_decode.htm
 https://www.geeksforgeeks.org/python/python-repr-function/
 https://www.w3schools.com/python/ref_func_range.asp
+ChatGPT was used as an outline for this code (lines 51-74).
 """
 
 """
@@ -80,6 +81,7 @@ https://www.w3schools.com/python/ref_func_len.asp
 https://www.geeksforgeeks.org/python/python-pack-method-in-tkinter/
 https://docs.python.org/3/library/struct.html
 https://www.w3schools.com/python/ref_func_range.asp
+ChatGPT was used as an outline for this code (lines 91-118).
 """
 
 """
@@ -128,6 +130,7 @@ https://www.geeksforgeeks.org/python/python-dictionary-get-method/
 https://www.geeksforgeeks.org/python/__name__-a-special-variable-in-python/
 https://www.geeksforgeeks.org/python/python-list-remove/
 https://dev.to/smac89/better-way-to-tryexceptpass-in-python-2460
+ChatGPT was used as an outline for this code (lines 140-165).
 """   
 
 """
